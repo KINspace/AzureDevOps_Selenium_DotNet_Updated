@@ -8,15 +8,17 @@ namespace Demo.SeleniumTests
     [TestClass]
     public class DotNetSiteTests
     {
+        public TestContext TestContext { get; set; }
+
         [TestMethod]
         public void TestGetStarted()
         {
             // Chrome Driver was manually downloaded from https://sites.google.com/a/chromium.org/chromedriver/downloads
             // parameter "." will instruct to look for the chromedriver.exe in the current folder
-            using (var driver = new ChromeDriver("."))
+            using (var driver = GetDriver())
             {
                 //Navigate to DotNet website
-                driver.Navigate().GoToUrl("https://dotnet.microsoft.com/");
+                driver.Navigate().GoToUrl((string)TestContext.Properties["webAppUrl"]);
                 //Click the Get Started button
                 driver.FindElement(By.LinkText("Get Started")).Click();
 
@@ -35,6 +37,18 @@ namespace Demo.SeleniumTests
                 // verify the title is the expected value "Next steps"
                 Assert.AreEqual(lastStepTitle, "Next steps");
             }
+        }
+
+        private ChromeDriver GetDriver()
+        {
+            var options = new ChromeOptions();
+
+            if (bool.Parse((string)TestContext.Properties["headless"])) 
+            {
+                options.AddArgument("headless");
+            }
+
+            return new ChromeDriver(".", options);
         }
     }
 }
