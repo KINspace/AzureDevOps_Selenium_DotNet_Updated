@@ -1,4 +1,5 @@
 # any commit to the master branch will trigger the CI build
+
 trigger:
 - master
 
@@ -10,10 +11,11 @@ pool:
 steps:
 # install the required .NET Core SDK version
 # only necessary if the agent doesn't already have the required SDK
+
 - task: DotNetCoreInstaller@0
-  displayName: 'Use .NET Core sdk 3.1.407'
+  displayName: 'Use .NET Core sdk 2.2.207'
   inputs:
-    version: 3.1.407
+    version: 2.2.207
 
 # restore Nuget packages/dependencies
 - task: DotNetCoreCLI@2
